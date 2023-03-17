@@ -2,78 +2,111 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     // Components
-    private Collider2D coll;
-    private Rigidbody2D rb;
+    Collider2D coll;
+    Rigidbody2D rb;
+    PlayerInput input;
     public Transform planet_center;
+    [SerializeField] LayerMask ground;
 
-    // Settings
-    public float speed;
-    public float jumpSpeed;
-    public float gravity;
+    // Player settings
+    public PlayerData player_data;
 
     // Player status
     private bool has_gravity = true;
-    Vector3 gravityUp;
-    Vector3 facing;
+    public bool onGround => rb.IsTouchingLayers(ground);
+    public int jumpTimes = 2;
 
-    // Start is called before the first frame update
-    void Start()
+    // Player positions
+    public Vector3 gravityUp;
+    public Vector3 facing;
+    public float dist;
+    public float angle;
+    public float rotateDir = 1;
+    public float ySpeed => Vector2.Dot(rb.velocity, gravityUp);
+    public Vector2 LineSpeed => player_data.speed * dist / 53f * facing* rotateDir;
+    public float ys;
+
+
+    private void OnEnable()
     {
-        coll = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        coll    = GetComponent<Collider2D>();
+        rb      = GetComponent<Rigidbody2D>();
+        input   = GetComponent<PlayerInput>();
 
-       
+        input.EnableGameplayInput();
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        
+    }
+
     void Update()
     {
         Attract();
+        ys = ySpeed;
+
+        if (Input.GetKeyDown(KeyCode.A))
+            rotateDir = -1f;
+        if (Input.GetKeyDown(KeyCode.D))
+            rotateDir = 1f;
+    }
+
+    private void FixedUpdate()
+    {
         Movement();
     }
 
     private void Attract()
     {
-        gravityUp = (transform.position - planet_center.position);  // planet -> player
-        facing = Quaternion.AngleAxis(-90, Vector3.forward) * gravityUp;
-        float dist = gravityUp.magnitude;
-        gravityUp = gravityUp.normalized;
+        // Compute facing and gravityUp dirctions each frame
+        gravityUp   = (transform.position - planet_center.position);  // planet -> player
+        facing      = Quaternion.AngleAxis(-90, Vector3.forward) * gravityUp;
+        dist        = gravityUp.magnitude;
+        gravityUp   = gravityUp.normalized;
+        angle       = Mathf.Atan2(gravityUp.y, gravityUp.x) * Mathf.Rad2Deg;
 
-        //Debug.Log((transform.position - planet_center.position).normalized);
-        //Debug.Log(right);
+        // Rotate Player
+        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        //Quaternion targetRotation = Quaternion.FromToRotation(transform.up, gravityUp) * transform.rotation;
+        //transform.rotation = targetRotation;
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime);
 
-        if (has_gravity)
-        {
-            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, gravityUp) * transform.rotation;
-            //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime); // 进行插值旋转
-            transform.rotation = targetRotation;
-
-            Vector2 v_up = Vector2.Dot(rb.velocity, gravityUp) * gravityUp;
-            Vector2 v_line = speed * dist / 53f * facing;    // 线速度
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                v_up = jumpSpeed * gravityUp;
-
-                Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
-            Debug.DrawLine(transform.position, transform.position + (Vector3)v_line, Color.red);
-
-            rb.velocity = v_up + v_line;
-
-            rb.AddForce(gravityUp * -gravity);
-            
-        }
-        
+        transform.localScale = new Vector3(rotateDir, 1f, 1f);
     }
+
     private void Movement()
     {
-        // jump
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    rb.AddForce(gravityUp * jumpSpeed);
-        //}
-        
+        if (has_gravity)
+        {
+            Vector2 v_up = Vector2.Dot(rb.velocity, gravityUp) * gravityUp;
+
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //    v_up = player_data.jumpSpeed * gravityUp;
+
+            Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
+            Debug.DrawLine(transform.position, transform.position + (Vector3)LineSpeed, Color.red);
+
+            rb.velocity = v_up + LineSpeed;
+
+            rb.AddForce(gravityUp * - player_data.gravity);
+
+        }
+
     }
+
+    public void Jump()
+    {
+        rb.velocity = LineSpeed + (Vector2)gravityUp * player_data.jumpSpeed;
+    }
+
+    public void Roll()
+    {
+        Debug.Log("Roll!");
+    }
+
 }

@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "ScriptableObject/½ÇÉ«×´Ì¬/Fall", fileName = "PlayerState_Fall")]
+public class PlayerState_Fall : PlayerState
+{
+    public override void Enter()
+    {
+        base.Enter();
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+
+        // jump
+        if (input.jumpPressed && player.jumpTimes > 0)
+        {
+            player.Jump();
+            input.jumpTime = -1f; // reset jump state
+            --player.jumpTimes;
+            stateMachine.SwitchState(typeof(PlayerState_Jump));
+        }
+        
+        // landing
+        if (player.onGround)
+        {
+            stateMachine.SwitchState(typeof(PlayerState_Run));
+        }
+    }
+
+    public override void PhysicUpdate()
+    {
+        base.PhysicUpdate();
+    }
+}
