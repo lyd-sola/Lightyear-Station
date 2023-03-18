@@ -57,16 +57,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState.cs" />
+    <Compile Include="Assets\Scripts\Input\InputActions.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Fall.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Run.cs" />
-    <Compile Include="Assets\Scripts\PlayerData.cs" />
+    <Compile Include="Assets\Scripts\Data\PlayerData.cs" />
+    <Compile Include="Assets\Scripts\Input\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerStateMachine.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Jump.cs" />
     <Compile Include="Assets\Scripts\State Machine System\IState.cs" />
     <Compile Include="Assets\Scripts\State Machine System\StateMachine.cs" />
-    <Compile Include="Assets\Scripts\Input\InputActions.cs" />
-    <Compile Include="Assets\Scripts\Input\PlayerInput.cs" />
-    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Fall.cs" />
+    <Compile Include="Assets\Scripts\Event System\VoidEventChannel.cs" />
+    <Compile Include="Assets\Scripts\Event System\OneParmEventChannel.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\Spawnable.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\ObstaclesControl.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\Killable.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\ReverseObstacle.cs" />
+    <Compile Include="Assets\Scripts\Data\PlanetData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Art\Player\跳跃\注.txt" />

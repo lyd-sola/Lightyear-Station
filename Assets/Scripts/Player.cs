@@ -9,25 +9,24 @@ public class Player : MonoBehaviour
     Collider2D coll;
     Rigidbody2D rb;
     PlayerInput input;
-    public Transform planet_center;
-    [SerializeField] LayerMask ground;
 
-    // Player settings
-    public PlayerData player_data;
+    // Settings
+    public PlayerData playerData;
+    public PlanetData planetData;
 
     // Player status
     private bool has_gravity = true;
-    public bool onGround => rb.IsTouchingLayers(ground);
-    public int jumpTimes = 2;
+    public bool onGround => rb.IsTouchingLayers(planetData.ground);
+    public int jumpTimes;
 
     // Player positions
     public Vector3 gravityUp;
     public Vector3 facing;
     public float dist;
-    public float angle;
+    public float angle;         // angle position
     public float rotateDir = 1;
     public float ySpeed => Vector2.Dot(rb.velocity, gravityUp);
-    public Vector2 LineSpeed => player_data.speed * dist / 53f * facing* rotateDir;
+    public Vector2 LineSpeed => playerData.speed * dist / 53f * facing* rotateDir;
     public float ys;
 
 
@@ -37,12 +36,11 @@ public class Player : MonoBehaviour
         rb      = GetComponent<Rigidbody2D>();
         input   = GetComponent<PlayerInput>();
 
-        input.EnableGameplayInput();
     }
 
     void Start()
     {
-        
+        input.EnableGameplayInput();    // call after InputActions instantiate
     }
 
     void Update()
@@ -51,9 +49,15 @@ public class Player : MonoBehaviour
         ys = ySpeed;
 
         if (Input.GetKeyDown(KeyCode.A))
+        {
             rotateDir = -1f;
+            transform.localScale = new Vector3(rotateDir, 1f, 1f);
+        }
         if (Input.GetKeyDown(KeyCode.D))
+        {
             rotateDir = 1f;
+            transform.localScale = new Vector3(rotateDir, 1f, 1f);
+        }
     }
 
     private void FixedUpdate()
@@ -64,7 +68,7 @@ public class Player : MonoBehaviour
     private void Attract()
     {
         // Compute facing and gravityUp dirctions each frame
-        gravityUp   = (transform.position - planet_center.position);  // planet -> player
+        gravityUp   = (transform.position - planetData.planetCenter);  // planet -> player
         facing      = Quaternion.AngleAxis(-90, Vector3.forward) * gravityUp;
         dist        = gravityUp.magnitude;
         gravityUp   = gravityUp.normalized;
@@ -75,33 +79,28 @@ public class Player : MonoBehaviour
         //Quaternion targetRotation = Quaternion.FromToRotation(transform.up, gravityUp) * transform.rotation;
         //transform.rotation = targetRotation;
         //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime);
-
-        transform.localScale = new Vector3(rotateDir, 1f, 1f);
     }
 
+    // Movement under planet gravity
     private void Movement()
     {
         if (has_gravity)
         {
             Vector2 v_up = Vector2.Dot(rb.velocity, gravityUp) * gravityUp;
 
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //    v_up = player_data.jumpSpeed * gravityUp;
-
             Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
             Debug.DrawLine(transform.position, transform.position + (Vector3)LineSpeed, Color.red);
 
             rb.velocity = v_up + LineSpeed;
 
-            rb.AddForce(gravityUp * - player_data.gravity);
-
+            rb.AddForce(gravityUp * - playerData.gravity);
         }
 
     }
 
     public void Jump()
     {
-        rb.velocity = LineSpeed + (Vector2)gravityUp * player_data.jumpSpeed;
+        rb.velocity = LineSpeed + (Vector2)gravityUp * playerData.jumpSpeed;
     }
 
     public void Roll()
@@ -109,4 +108,9 @@ public class Player : MonoBehaviour
         Debug.Log("Roll!");
     }
 
+
+    public void Kill()
+    {
+        Debug.Log("Kill!");
+    }
 }

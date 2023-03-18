@@ -9,7 +9,7 @@ public class PlayerState_Run : PlayerState
     {
         base.Enter();
         // Reset jumpTimes
-        player.jumpTimes = player.player_data.jumpTimes;
+        player.jumpTimes = player.playerData.jumpTimes;
     }
 
     public override void LogicUpdate()

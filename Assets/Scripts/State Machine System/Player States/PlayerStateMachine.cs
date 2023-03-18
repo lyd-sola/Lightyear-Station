@@ -35,9 +35,4 @@ public class PlayerStateMachine : StateMachine
         SwitchOn(stateTable[typeof(PlayerState_Run)]);
 
     }
-
-    private void Start()
-    {
-        
-    }
 }
