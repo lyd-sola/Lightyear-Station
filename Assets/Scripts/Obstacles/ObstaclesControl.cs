@@ -4,11 +4,27 @@ using UnityEngine;
 
 public class ObstaclesControl : MonoBehaviour
 {
-    Transform ch;
+    [SerializeField] Spawnable[] prefabs;
+
+    List<SpawnablePool> pools = new List<SpawnablePool>();
     // Start is called before the first frame update
     void Start()
     {
-        ch = transform.Find("ตุดฬ");
+        foreach(Spawnable prefab in prefabs)
+        {
+            var poolHolder = new GameObject($"Pool: {prefab.name}");
+
+            poolHolder.transform.parent = transform;
+            poolHolder.transform.position = transform.position;
+            poolHolder.SetActive(false);
+
+            var pool = poolHolder.AddComponent<SpawnablePool>();
+
+            pool.Initialize(prefab);
+            pools.Add(pool);
+
+            poolHolder.SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -16,11 +32,11 @@ public class ObstaclesControl : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.O))
         {
-            ch.gameObject.SetActive(true);
+            pools[Random.Range(0, pools.Count)].Get(Random.Range(0f, 360f));
         }
         if(Input.GetKeyDown(KeyCode.P))
         {
-            ch.gameObject.SetActive(false);
+            
         }
     }
 }

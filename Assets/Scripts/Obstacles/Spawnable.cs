@@ -11,32 +11,42 @@ public class Spawnable : MonoBehaviour
 
     // Spawn animation range
     public float downPoint = -10f;
-    public float upPoint = 10f;
-    public float appearTime = 1f;
-    public float disappearTime = 1f;
+    public float upPoint = 2f;
+
+    public float appearTime = 0.2f;
+    public float disappearTime = 0.2f;
+    public float deactivateDelay = 0.5f;
 
     Vector3 down;
     Vector3 up;
     float animProgress = 0;
     bool isAppear = false, isDisappear = false;
+    bool toDeactivate = false;
+    float deactivateCount;
 
-    private void Start()
+    System.Action<Spawnable> deactivateAction;
+
+    virtual public void Spawn(float angle)
     {
-        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        this.angle = angle;
 
         var rotate = Quaternion.AngleAxis(angle, Vector3.forward);
         down = rotate * new Vector3(planetData.radius + downPoint, 0, 0) + planetData.planetCenter;
         up = rotate * new Vector3(planetData.radius + upPoint, 0, 0) + planetData.planetCenter;
 
-       
-    }
+        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        transform.position = down;
 
-    virtual public void Spawn()
-    {
+        gameObject.SetActive(true);
         isAppear = true;
+        isDisappear = false;
         animProgress = 0;
-
-        Debug.DrawLine(down, up, Color.red);
+    }
+    virtual public void Hide()
+    {
+        isDisappear = true;
+        isAppear = false;
+        animProgress = 0;
     }
 
     private void FixedUpdate()
@@ -44,34 +54,50 @@ public class Spawnable : MonoBehaviour
         // in appear progress
         if (isAppear)
         {
-            transform.position = Vector3.Slerp(down, up, animProgress);
             animProgress += Time.fixedDeltaTime / appearTime;
-            if (animProgress > 1 - 1e-6)
+            transform.position = down + (up - down) * animProgress;
+            if (animProgress >= 1f)
                 isAppear = false;
         }
         // in disappear progress
         else if(isDisappear)
         {
-            transform.position = Vector3.Slerp(up, down, animProgress);
             animProgress += Time.fixedDeltaTime / disappearTime;
-            if (animProgress > 1 - 1e-6)
-                isAppear = false;
+            transform.position = up + (down - up) * animProgress;
+            if (animProgress >= 1f)
+            {
+                isDisappear = false;
+                gameObject.SetActive(false);
+            }
+        }
+        // deactivate
+        if(toDeactivate)
+        {
+            deactivateCount -= Time.fixedDeltaTime;
+            if (deactivateCount < 0)
+            {
+                // call pool to release this obj
+                deactivateAction.Invoke(this);
+                toDeactivate = false;
+            }
+                
         }
     }
 
-    virtual public void Hide()
+    public void SetDeactivateAction(System.Action<Spawnable> action)
     {
-        isDisappear = true;
-        animProgress = 0;
+        deactivateAction = action;
     }
 
-    virtual protected void OnEnable()
+    // player passes obstacle
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Spawn();
-    }
+        if (collision.TryGetComponent(out Player player))
+        {
+            if(!toDeactivate)
+                deactivateCount = deactivateDelay;
+            toDeactivate = true;
+        }
 
-    virtual protected void OnDisable()
-    {
-        Hide();
     }
 }

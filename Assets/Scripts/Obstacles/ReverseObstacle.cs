@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// script for environment obstacles that can kill player
-public class Killable : Spawnable
+// script for environment obstacles that reverse player
+public class ReverseObstacle : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.TryGetComponent(out Player player))
+        // Reverse
+        if (collision.gameObject.TryGetComponent(out Player player))
         {
-            player.Kill();
+            player.rotateDir *= -1;
+            player.transform.localScale = new Vector3(player.transform.localScale.x * -1, 1f, 1f);
         }
     }
 }

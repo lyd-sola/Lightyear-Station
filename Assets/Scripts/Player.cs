@@ -111,6 +111,6 @@ public class Player : MonoBehaviour
 
     public void Kill()
     {
-        Debug.Log("Kill!");
+        Debug.Log("Kill!" + Time.time.ToString());
     }
 }
