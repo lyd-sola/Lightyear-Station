@@ -6,16 +6,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Components
-    Collider2D coll;
+    CapsuleCollider2D coll;
     Rigidbody2D rb;
     PlayerInput input;
+    TrailRenderer trailRenderer;
 
     // Settings
     public PlayerData playerData;
     public PlanetData planetData;
 
     // Player status
-    private bool has_gravity = true;
+    bool has_gravity = true;
     public bool onGround => rb.IsTouchingLayers(planetData.ground);
     public int jumpTimes;
 
@@ -32,15 +33,17 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        coll    = GetComponent<Collider2D>();
+        coll    = GetComponent<CapsuleCollider2D>();
         rb      = GetComponent<Rigidbody2D>();
         input   = GetComponent<PlayerInput>();
-
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     void Start()
     {
         input.EnableGameplayInput();    // call after InputActions instantiate
+        coll.size = playerData.normalColliderSize;
+        coll.offset = playerData.normalColliderOff;
     }
 
     void Update()
@@ -67,18 +70,22 @@ public class Player : MonoBehaviour
 
     private void Attract()
     {
-        // Compute facing and gravityUp dirctions each frame
-        gravityUp   = (transform.position - planetData.planetCenter);  // planet -> player
-        facing      = Quaternion.AngleAxis(-90, Vector3.forward) * gravityUp;
-        dist        = gravityUp.magnitude;
-        gravityUp   = gravityUp.normalized;
-        angle       = Mathf.Atan2(gravityUp.y, gravityUp.x) * Mathf.Rad2Deg;
+        if (has_gravity)
+        {
+            // Compute facing and gravityUp dirctions each frame
+            gravityUp = (transform.position - planetData.planetCenter);  // planet -> player
+            facing = Quaternion.AngleAxis(-90, Vector3.forward) * gravityUp;
+            dist = gravityUp.magnitude;
+            gravityUp = gravityUp.normalized;
+            angle = Mathf.Atan2(gravityUp.y, gravityUp.x) * Mathf.Rad2Deg;
 
-        // Rotate Player
-        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
-        //Quaternion targetRotation = Quaternion.FromToRotation(transform.up, gravityUp) * transform.rotation;
-        //transform.rotation = targetRotation;
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime);
+            // Rotate Player
+            transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+            //Quaternion targetRotation = Quaternion.FromToRotation(transform.up, gravityUp) * transform.rotation;
+            //transform.rotation = targetRotation;
+            //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime);
+        }
+
     }
 
     // Movement under planet gravity
@@ -102,15 +109,28 @@ public class Player : MonoBehaviour
     {
         rb.velocity = LineSpeed + (Vector2)gravityUp * playerData.jumpSpeed;
     }
+    
+    public void FallFast()
+    {
+        rb.velocity += (Vector2)gravityUp * -playerData.fastFallSpeed;
+    }
 
     public void Roll()
     {
-        Debug.Log("Roll!");
+        coll.size = playerData.rollColliderSize;
+        coll.offset = playerData.rollColliderOff;
+        transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
     }
 
+    public void StopRoll()
+    {
+        coll.size = playerData.normalColliderSize;
+        coll.offset = playerData.normalColliderOff;
+        transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
+    }
 
     public void Kill()
-    {
+    { 
         Debug.Log("Kill!" + Time.time.ToString());
     }
 }

@@ -24,6 +24,12 @@ public class PlayerState_Run : PlayerState
             --player.jumpTimes;
             stateMachine.SwitchState(typeof(PlayerState_Jump));
         }
+
+        // Roll
+        if(input.rollPressed)
+        {
+            stateMachine.SwitchState(typeof(PlayerState_Roll));
+        }
     }
 
     public override void PhysicUpdate()

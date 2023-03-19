@@ -5,9 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/½ÇÉ«×´Ì¬/Fall", fileName = "PlayerState_Fall")]
 public class PlayerState_Fall : PlayerState
 {
+    bool fastFall;
     public override void Enter()
     {
         base.Enter();
+        fastFall = false;
     }
 
     public override void LogicUpdate()
@@ -15,7 +17,7 @@ public class PlayerState_Fall : PlayerState
         base.LogicUpdate();
 
         // jump
-        if (input.jumpPressed && player.jumpTimes > 0)
+        if (!fastFall && input.jumpPressed && player.jumpTimes > 0)
         {
             player.Jump();
             input.jumpTime = -1f; // reset jump state
@@ -27,6 +29,13 @@ public class PlayerState_Fall : PlayerState
         if (player.onGround)
         {
             stateMachine.SwitchState(typeof(PlayerState_Run));
+        }
+
+        // Roll
+        if (input.rollPressed && !fastFall)
+        {
+            fastFall = true;
+            player.FallFast();
         }
     }
 

@@ -10,4 +10,12 @@ public class PlayerData : ScriptableObject
     public float jumpSpeed;
     public float gravity;
     public int jumpTimes;
+    public float fastFallSpeed;
+    public float rollSpeed;
+
+    // Collider Settings
+    public Vector2 rollColliderSize;
+    public Vector2 normalColliderSize;
+    public Vector2 rollColliderOff;
+    public Vector2 normalColliderOff;
 }

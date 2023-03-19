@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\Obstacles\Spawnable.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Killable.cs" />
+    <Compile Include="Assets\Scripts\Obstacles\SpawnablePool.cs" />
     <Compile Include="Assets\Scripts\Event System\VoidEventChannel.cs" />
     <Compile Include="Assets\Scripts\Event System\OneParmEventChannel.cs" />
     <Compile Include="Assets\Scripts\Input\InputActions.cs" />
@@ -74,10 +75,13 @@
     <Compile Include="Assets\Scripts\State Machine System\IState.cs" />
     <Compile Include="Assets\Scripts\State Machine System\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Obstacles\ObstaclesControl.cs" />
-    <Compile Include="Assets\Scripts\Obstacles\SpawnablePool.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Roll.cs" />
+    <Compile Include="Assets\Scripts\CircleImage.cs" />
+    <Compile Include="Assets\Scripts\flow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Art\Player\跳跃\注.txt" />
+    <None Include="Assets\Materials\Flowmap.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
