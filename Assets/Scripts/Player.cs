@@ -14,17 +14,19 @@ public class Player : MonoBehaviour
     PlayerInput input;
     TrailRenderer trailRenderer;
 
-    // Settings
+    [Header("Settings")]
     public PlayerData playerData;
     public PlanetData planetData;
 
-    // Player status
+
+    [Header("Player status")]
     bool has_gravity = true;
     bool has_shield = false;
     public bool onGround => rb.IsTouchingLayers(planetData.ground);
     public int jumpTimes;
 
-    // Player positions
+
+    [Header("Player positions")]
     public Vector3 gravityUp;
     public Vector3 facing;
     public float dist;

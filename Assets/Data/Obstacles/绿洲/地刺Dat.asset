@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u5730\u523ADat"
   m_EditorClassIdentifier: Assembly-CSharp::ObstableData
   downPoint: -3
-  upPoint: 1.6
+  upPoint: 1.5
   appearTime: 0.2
   disappearTime: 0.2
   deactivateDelay: 0.5

@@ -17,7 +17,7 @@ public class LevelData : ScriptableObject
     public AnimationCurve obstacleGenerateCurve;    // Indicates expected time of generate
 
     [Header("Reward Shield Generate")]
-    public bool hasRewardShieldGenerate = true;
+    public int maxRewardShieldGenerate = 1;
     public AnimationCurve rewardGenerateCurve;
 
 
@@ -25,4 +25,7 @@ public class LevelData : ScriptableObject
     public float genInterval = 0.5f;
     public float exitGenTime = 40f;
     //public float suddenShuffle;
+
+    [Header("UI Settings")]
+    public Color timerColor;
 }

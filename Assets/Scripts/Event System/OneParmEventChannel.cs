@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "ScriptableObject/Events/OneParmEventChannel", fileName = "OneParmEvent")]
+//[CreateAssetMenu(menuName = "ScriptableObject/Events/OneParmEventChannel", fileName = "OneParmEvent")]
 public class OneParmEventChannel<T> : ScriptableObject
 {
     event System.Action<T> deleg;

@@ -19,4 +19,10 @@ public class PlayerData : ScriptableObject
     public Vector2 normalColliderSize;
     public Vector2 rollColliderOff;
     public Vector2 normalColliderOff;
+
+    [Header("Color Settings")]
+    public Color normalColor;
+    public Color normalTrailerColor;
+    public Color shieldColor;
+    public Color shieldTrailerColor;
 }

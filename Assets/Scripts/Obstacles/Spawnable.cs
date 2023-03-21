@@ -27,7 +27,7 @@ public class Spawnable : MonoBehaviour
         down = rotate * new Vector3(planetData.radius + obstacleData.downPoint, 0, 0) + planetData.planetCenter;
         up = rotate * new Vector3(planetData.radius + obstacleData.upPoint, 0, 0) + planetData.planetCenter;
 
-        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);    // zero is right dir
         transform.position = down;
 
         gameObject.SetActive(true);
@@ -50,9 +50,13 @@ public class Spawnable : MonoBehaviour
         if (isAppear)
         {
             animProgress += Time.deltaTime / obstacleData.appearTime;
-            transform.position = down + (up - down) * animProgress;
             if (animProgress >= 1f)
+            {
                 isAppear = false;
+                transform.position = up;    // up point should be accurate
+            }
+            else
+                transform.position = down + (up - down) * animProgress;
         }
         // in disappear progress, deactivate after hide animation
         else if (isDisappear)

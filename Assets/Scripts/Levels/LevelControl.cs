@@ -8,9 +8,9 @@ public class LevelControl : MonoBehaviour
 
     [Header("关卡数据")]
     [SerializeField] LevelData[] levelData;
-    [SerializeField] int level = 0;
+    [SerializeField] public int level = 0;
 
-    LevelData nowLevelData;
+    public LevelData nowLevelData;
 
     List<SpawnablePool> obstaclePools = new List<SpawnablePool>();
     SpawnablePool rewardPool;
@@ -21,6 +21,7 @@ public class LevelControl : MonoBehaviour
     float totWeight = 0f;   // tot gen weight of obstacles
 
     bool exitGenerated = false;
+    int rewardShieldGenerated = 0;
 
     // Generate Time Interval
     [SerializeField] float genInterval = 0f;
@@ -28,10 +29,17 @@ public class LevelControl : MonoBehaviour
     [SerializeField] float rewardInterval = 0f;
 
 
-    // empty place
+    // empty slots
     [SerializeField] List<int> obstacleSlotRemain;
     int maxObstacleCount;
     float obstacleSlotSize;
+
+
+    [Header("Events")]
+    [SerializeField] IntEventChannel startGameEvent;
+    [SerializeField] VoidEventChannel playerDeathEvent;
+    [SerializeField] VoidEventChannel levelSuccessEvent;
+
     float IntPosToAngle(int pos) => (360 - maxObstacleCount * obstacleSlotSize) / 2f + pos * obstacleSlotSize;
     int AngleToIntSlot(float angle) => Mathf.FloorToInt((angle - (360 - maxObstacleCount * obstacleSlotSize) / 2f) / obstacleSlotSize);
 
@@ -40,6 +48,8 @@ public class LevelControl : MonoBehaviour
     private void OnEnable()
     {
         instance = this;
+
+        levelSuccessEvent.AddListener(delegate { Debug.Log("Level clear!" + GameTime.ToString()); });
     }
 
     void Start()
@@ -82,12 +92,19 @@ public class LevelControl : MonoBehaviour
         for (int i = 0; i < maxObstacleCount; ++i)
             obstacleSlotRemain.Add(i);
 
-        // rest time
+        // reset count
+        rewardShieldGenerated = 0;
+        exitGenerated = false;
+
+        // reset time
         gameStartTime = Time.time;
         exitGenerated = false;
         genInterval = 0f;
         obstacleInterval = 0f;
         rewardInterval = 0f;
+
+        // start game
+        startGameEvent.Broadcast(level);
     }
 
     void Update()
@@ -117,8 +134,8 @@ public class LevelControl : MonoBehaviour
         rewardInterval += Time.fixedDeltaTime;
         if (genInterval >= nowLevelData.genInterval)
         {
-            //GenerateEjector();
-            //GenerateRewardShield();
+            GenerateEjector();
+            GenerateRewardShield();
             GenerateObstacle();
             genInterval = 0f;
         }
@@ -135,16 +152,18 @@ public class LevelControl : MonoBehaviour
             genSlot = Random.Range(0, obstacleSlotRemain.Count - 1);
             genAngle = IntPosToAngle(obstacleSlotRemain[genSlot]);
             genAngle = Random.Range(genAngle, genAngle + nowLevelData.obstacleRandomRange);
-            // Player distance restrict
-            if ((genAngle - Player.instance.angle + 360f) % 360f > nowLevelData.obstacleBeforePlayer)
+
+            // Player distance restrict, don't generate beside player
+            float angleDist = Mathf.Abs(genAngle - Player.instance.angle);
+            if (Mathf.Min(angleDist, 360f - angleDist) > nowLevelData.obstacleBeforePlayer)
             {
                 success = true;
                 break;
             }
         }
         if (!success) return -1f;
-        obstacleSlotRemain.RemoveAt(genSlot);
 
+        obstacleSlotRemain.RemoveAt(genSlot);
         return genAngle;
     }
 
@@ -186,7 +205,13 @@ public class LevelControl : MonoBehaviour
 
     void GenerateRewardShield()
     {
-        float genProb = levelData[0].rewardGenerateCurve.Evaluate(GameTime);
+        if (rewardShieldGenerated >= nowLevelData.maxRewardShieldGenerate)
+        {
+            rewardInterval = 0;
+            return;
+        }
+
+        float genProb = nowLevelData.rewardGenerateCurve.Evaluate(GameTime);
         genProb = rewardInterval / (2 * genProb + 1e-5f);     // 概率从0-1递增，超过曲线值两倍必生成
         if (Random.Range(0f, 1f) <= genProb)
         {
@@ -196,6 +221,15 @@ public class LevelControl : MonoBehaviour
 
             // reset gen time interval
             rewardInterval = 0;
+
+            // randomly choose which slot to gen
+            float genAngle = RandomGenAngle();
+            if (genAngle < 0) return;
+
+            // generate
+            var gen = rewardPool.Get(genAngle);
+            gen.SetDeactivateAction(delegate { rewardShieldGenerated--; }); // reset count after destroy
+            ++rewardShieldGenerated;
         }
     }
 
@@ -207,12 +241,17 @@ public class LevelControl : MonoBehaviour
             if (obstacleSlotRemain.Count == 0)
                 return;
 
-            exitGenerated = true;
+            // randomly choose which slot to gen
+            float genAngle = RandomGenAngle();
+            if (genAngle < 0) return;
 
+            // gen exit
             Spawnable n = Instantiate(nowLevelData.ejector, transform);
-            n.SetDeactivateAction(delegate { Destroy(n.gameObject); });
+            n.SetDeactivateAction(delegate { Destroy(n.gameObject); }); // destroy after touch
+            n.SetDeactivateAction(delegate { levelSuccessEvent.Broadcast(); }); // Broadcast Level Success
+            n.Spawn(genAngle);
 
-            n.Spawn(0f);
+            exitGenerated = true;
         }
     }
 }

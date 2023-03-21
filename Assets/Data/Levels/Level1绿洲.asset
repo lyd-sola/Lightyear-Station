@@ -63,13 +63,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hasRewardShieldGenerate: 1
+  maxRewardShieldGenerate: 1
   rewardGenerateCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 10
+      value: 30
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -77,17 +77,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 30
-      value: 8
-      inSlope: -0.05533123
-      outSlope: -0.05533123
+      time: 25
+      value: 27
+      inSlope: -0.13279496
+      outSlope: -0.13279496
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 90.36488
-      value: 5
+      value: 15
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -98,4 +98,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   genInterval: 0.5
-  exitGenTime: 40
+  exitGenTime: 10
+  timerColor: {r: 0.40000004, g: 0.8745099, b: 0.6901961, a: 1}
