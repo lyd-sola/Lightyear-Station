@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    // Only one player instace, for other scripts
+    public static Player instance;
+
     // Components
     CapsuleCollider2D coll;
     Rigidbody2D rb;
@@ -17,6 +20,7 @@ public class Player : MonoBehaviour
 
     // Player status
     bool has_gravity = true;
+    bool has_shield = false;
     public bool onGround => rb.IsTouchingLayers(planetData.ground);
     public int jumpTimes;
 
@@ -33,6 +37,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        instance = this;
         coll    = GetComponent<CapsuleCollider2D>();
         rb      = GetComponent<Rigidbody2D>();
         input   = GetComponent<PlayerInput>();
@@ -95,8 +100,8 @@ public class Player : MonoBehaviour
         {
             Vector2 v_up = Vector2.Dot(rb.velocity, gravityUp) * gravityUp;
 
-            Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
-            Debug.DrawLine(transform.position, transform.position + (Vector3)LineSpeed, Color.red);
+            //Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
+            //Debug.DrawLine(transform.position, transform.position + (Vector3)LineSpeed, Color.red);
 
             rb.velocity = v_up + LineSpeed;
 
@@ -129,8 +134,27 @@ public class Player : MonoBehaviour
         transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
     }
 
-    public void Kill()
-    { 
-        Debug.Log("Kill!" + Time.time.ToString());
+    public void Damage()
+    {
+        if (has_shield)
+        {
+            Debug.Log("Damage!" + Time.time.ToString());
+            BreakShield();
+        }
+        else
+        {
+            Debug.Log("Killed!" + Time.time.ToString());
+        }
+    }
+
+    public void AddShield()
+    {
+        Debug.Log("½±Àø»¤¶Ü£¡" + Time.time.ToString());
+        has_shield = true;
+    }
+
+    public void BreakShield()
+    {
+        has_shield = false;
     }
 }

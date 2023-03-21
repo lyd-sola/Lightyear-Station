@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   speed: 1.7
-  jumpSpeed: 40
+  jumpSpeed: 42
+  fastFallSpeed: 40
   gravity: 250
   jumpTimes: 2
-  fastFallSpeed: 40
-  rollSpeed: 20
   rollColliderSize: {x: 1.72, y: 1.72}
   normalColliderSize: {x: 2, y: 3.92}
   rollColliderOff: {x: 0, y: 0}

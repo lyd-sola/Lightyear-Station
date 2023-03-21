@@ -19,10 +19,15 @@ public class SpawnablePool : MonoBehaviour
     {
         Spawnable n = Instantiate(prefab, transform);
         n.SetDeactivateAction(delegate { Release(n); });
+        n.SetDeactivateAction(LevelControl.instance.ResetSlot);
         return n;
     }
     protected virtual void OnGetPoolItem(Spawnable obj) => obj.Spawn(spawnAngle);
-    protected virtual void OnReleasePoolItem(Spawnable obj) => obj.Hide();
+    protected virtual void OnReleasePoolItem(Spawnable obj)
+    {
+       //obj.Hide();
+    }
+    
     protected virtual void OnDestroyPoolItem(Spawnable obj) => Destroy(obj.gameObject);
 
     // Interface for user
@@ -34,7 +39,6 @@ public class SpawnablePool : MonoBehaviour
     public Spawnable Get(float spawnAngle)
     {
         this.spawnAngle = spawnAngle;
-
         return pool.Get();
     }
     public void Release(Spawnable obj) => pool.Release(obj);

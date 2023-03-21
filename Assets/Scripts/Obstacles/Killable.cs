@@ -10,7 +10,7 @@ public class Killable : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Player player))
         {
-            player.Kill();
+            player.Damage();
         }
     }
 }

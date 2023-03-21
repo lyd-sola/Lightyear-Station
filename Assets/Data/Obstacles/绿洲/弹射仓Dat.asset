@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 737309544f78d1241b4b53977e310d1e, type: 3}
-  m_Name: PlanetData
+  m_Script: {fileID: 11500000, guid: 3869b84b86b203c4aa675b00817d9c3f, type: 3}
+  m_Name: "\u5F39\u5C04\u4ED3Dat"
   m_EditorClassIdentifier: 
-  planetCenter: {x: 0, y: 0, z: 0}
-  ground:
-    serializedVersion: 2
-    m_Bits: 64
-  radius: 26.5
+  downPoint: -3
+  upPoint: 5
+  appearTime: 0.2
+  disappearTime: 0.2
+  deactivateDelay: 1
+  isDeactivateOnPass: 0
+  generateWeight: 0

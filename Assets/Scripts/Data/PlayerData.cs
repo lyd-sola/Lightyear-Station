@@ -5,15 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObject/½ÇÉ«Êý¾Ý", order = 0)]
 public class PlayerData : ScriptableObject
 {
-    // Settings
+    [Header("Speed Settings")]
     public float speed;
     public float jumpSpeed;
+    public float fastFallSpeed;
+
+    [Header("Gravity Settings")]
     public float gravity;
     public int jumpTimes;
-    public float fastFallSpeed;
-    public float rollSpeed;
 
-    // Collider Settings
+    [Header("Collider Settings")]
     public Vector2 rollColliderSize;
     public Vector2 normalColliderSize;
     public Vector2 rollColliderOff;

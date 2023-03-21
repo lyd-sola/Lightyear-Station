@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class flow : MonoBehaviour
+public class Flow : MonoBehaviour
 {
     [SerializeField] float speed = -0.05f;
     Material material;
