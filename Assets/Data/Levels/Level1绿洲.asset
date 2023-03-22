@@ -97,6 +97,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  BGM: {fileID: 8300000, guid: e72ad5efa2597e24dbb225547a4763f8, type: 3}
   genInterval: 0.5
   exitGenTime: 10
   timerColor: {r: 0.40000004, g: 0.8745099, b: 0.6901961, a: 1}
+  ring: {fileID: 21300000, guid: 5fe604643f26fd147a973b81ba971b66, type: 3}
+  sphereMaterial: {fileID: 2100000, guid: 40034a3f03472714b97d39572f4d5169, type: 2}

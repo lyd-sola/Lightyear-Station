@@ -58,7 +58,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Obstacles\Spawnable.cs" />
     <Compile Include="Assets\Scripts\Data\ObstacleData.cs" />
+    <Compile Include="Assets\Scripts\UI\RingRotate.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState.cs" />
+    <Compile Include="Assets\Scripts\UI\GameUI.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Killable.cs" />
     <Compile Include="Assets\Scripts\Obstacles\SpawnablePool.cs" />
     <Compile Include="Assets\Scripts\Event System\VoidEventChannel.cs" />
@@ -71,9 +73,9 @@
     <Compile Include="Assets\Scripts\Data\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Data\PlanetData.cs" />
     <Compile Include="Assets\Scripts\Input\PlayerInput.cs" />
-    <Compile Include="Assets\Scripts\CircleImage.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerStateMachine.cs" />
     <Compile Include="Assets\Scripts\Levels\LevelControl.cs" />
+    <Compile Include="Assets\Scripts\Event System\OneParmEventChannel.cs" />
     <Compile Include="Assets\Scripts\Data\LevelData.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Ejector.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Jump.cs" />
@@ -81,10 +83,10 @@
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Roll.cs" />
     <Compile Include="Assets\Scripts\State Machine System\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Obstacles\RewardShield.cs" />
-    <Compile Include="Assets\Scripts\Flow.cs" />
+    <Compile Include="Assets\Scripts\UI\Flow.cs" />
     <Compile Include="Assets\Scripts\Obstacles\ObstaclesControl.cs" />
-    <Compile Include="Assets\Scripts\Event System\OneParmEventChannel.cs" />
-    <Compile Include="Assets\Scripts\UI\GameUI.cs" />
+    <Compile Include="Assets\Scripts\MainMenuPlayer.cs" />
+    <Compile Include="Assets\Scripts\UI\MainButtons.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

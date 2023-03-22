@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class LevelControl : MonoBehaviour
 {
+    // components
     public static LevelControl instance;
+    AudioSource BGMSource;
+    [SerializeField] MeshRenderer sphereRenderer;
+    [SerializeField] SpriteRenderer ringRenderer;
 
     [Header("¹Ø¿¨Êý¾Ý")]
     [SerializeField] LevelData[] levelData;
     [SerializeField] public int level = 0;
-
     public LevelData nowLevelData;
 
+    // Object Pools
     List<SpawnablePool> obstaclePools = new List<SpawnablePool>();
     SpawnablePool rewardPool;
+    float totWeight = 0f;   // tot gen weight of obstacles
 
+    // Gametime
     float gameStartTime = 0f;
     public float GameTime => Time.time - gameStartTime;
 
-    float totWeight = 0f;   // tot gen weight of obstacles
-
+    // Generate count
     bool exitGenerated = false;
     int rewardShieldGenerated = 0;
 
@@ -27,7 +32,6 @@ public class LevelControl : MonoBehaviour
     [SerializeField] float genInterval = 0f;
     [SerializeField] float obstacleInterval = 0f;
     [SerializeField] float rewardInterval = 0f;
-
 
     // empty slots
     [SerializeField] List<int> obstacleSlotRemain;
@@ -48,6 +52,7 @@ public class LevelControl : MonoBehaviour
     private void OnEnable()
     {
         instance = this;
+        BGMSource = GetComponent<AudioSource>();
 
         levelSuccessEvent.AddListener(delegate { Debug.Log("Level clear!" + GameTime.ToString()); });
     }
@@ -95,6 +100,13 @@ public class LevelControl : MonoBehaviour
         // reset count
         rewardShieldGenerated = 0;
         exitGenerated = false;
+
+        // set scene
+        sphereRenderer.material = nowLevelData.sphereMaterial;
+        ringRenderer.sprite = nowLevelData.ring;
+        BGMSource.clip = nowLevelData.BGM;
+        BGMSource.loop = true;
+        BGMSource.Play();
 
         // reset time
         gameStartTime = Time.time;

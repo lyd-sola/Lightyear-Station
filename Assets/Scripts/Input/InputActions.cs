@@ -82,6 +82,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1add70a0-ddd8-411f-ab8f-95b4e9b1b5ed"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""97205f8d-71eb-4724-9c68-93ea22228e43"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",

@@ -25,4 +25,9 @@ public class PlayerData : ScriptableObject
     public Color normalTrailerColor;
     public Color shieldColor;
     public Color shieldTrailerColor;
+
+    [Header("Sound Effects")]
+    public AudioClip jumpSound;
+    public AudioClip deathSound;
+    public AudioClip shieldSound;
 }

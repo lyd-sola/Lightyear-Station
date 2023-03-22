@@ -22,10 +22,13 @@ public class LevelData : ScriptableObject
 
 
     [Header("Level Settings")]
+    public AudioClip BGM;
     public float genInterval = 0.5f;
     public float exitGenTime = 40f;
     //public float suddenShuffle;
 
     [Header("UI Settings")]
     public Color timerColor;
+    public Sprite ring;
+    public Material sphereMaterial;
 }

@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     PlayerInput input;
     TrailRenderer trailRenderer;
+    AudioSource audioSource;
 
     [Header("Settings")]
     public PlayerData playerData;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
         rb      = GetComponent<Rigidbody2D>();
         input   = GetComponent<PlayerInput>();
         trailRenderer = GetComponent<TrailRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -115,6 +117,7 @@ public class Player : MonoBehaviour
     public void Jump()
     {
         rb.velocity = LineSpeed + (Vector2)gravityUp * playerData.jumpSpeed;
+        audioSource.PlayOneShot(playerData.jumpSound);
     }
     
     public void FallFast()
@@ -127,6 +130,7 @@ public class Player : MonoBehaviour
         coll.size = playerData.rollColliderSize;
         coll.offset = playerData.rollColliderOff;
         transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
+        audioSource.Play();
     }
 
     public void StopRoll()
@@ -134,6 +138,7 @@ public class Player : MonoBehaviour
         coll.size = playerData.normalColliderSize;
         coll.offset = playerData.normalColliderOff;
         transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
+        audioSource.Stop();
     }
 
     public void Damage()
@@ -145,6 +150,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            audioSource.PlayOneShot(playerData.deathSound);
             Debug.Log("Killed!" + Time.time.ToString());
         }
     }
@@ -153,6 +159,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("½±Àø»¤¶Ü£¡" + Time.time.ToString());
         has_shield = true;
+        audioSource.PlayOneShot(playerData.shieldSound);
     }
 
     public void BreakShield()

@@ -25,3 +25,6 @@ MonoBehaviour:
   normalTrailerColor: {r: 0.4509804, g: 0.58431375, b: 0.9137255, a: 0}
   shieldColor: {r: 0, g: 0, b: 0, a: 0}
   shieldTrailerColor: {r: 0, g: 0, b: 0, a: 0}
+  jumpSound: {fileID: 8300000, guid: 693ff7d65ac9c254aa9f667e7393910a, type: 3}
+  deathSound: {fileID: 8300000, guid: 954d6ed75093ec941a54fb71ae02beee, type: 3}
+  shieldSound: {fileID: 8300000, guid: 072d297f74508ca46a2cc6a49b0f5f40, type: 3}

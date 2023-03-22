@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Oasis
+  m_Name: "\u6676\u68A6"
   m_Shader: {fileID: 4800000, guid: 6da65547cfc67db4fb4a406cb1aaece2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -45,9 +45,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d34d77ea78977e842821ed18479320dd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 90f4bcc518fdc2c49b2d4dbe456705de, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 2.23, y: 0}
+        m_Offset: {x: 0.63, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
