@@ -7,16 +7,17 @@ public class LevelControl : MonoBehaviour
     // components
     public static LevelControl instance;
     AudioSource BGMSource;
-    [SerializeField] MeshRenderer sphereRenderer;
-    [SerializeField] SpriteRenderer ringRenderer;
+    //[SerializeField] MeshRenderer sphereRenderer;
+    [SerializeField] SpriteRenderer planetPrefab;
 
     [Header("¹Ø¿¨Êý¾Ý")]
+    [SerializeField] PlanetData planetData;
     [SerializeField] LevelData[] levelData;
     [SerializeField] public int level = 0;
     public LevelData nowLevelData;
 
     // Object Pools
-    List<SpawnablePool> obstaclePools = new List<SpawnablePool>();
+    List<SpawnablePool> obstaclePools;
     SpawnablePool rewardPool;
     float totWeight = 0f;   // tot gen weight of obstacles
 
@@ -29,12 +30,12 @@ public class LevelControl : MonoBehaviour
     int rewardShieldGenerated = 0;
 
     // Generate Time Interval
-    [SerializeField] float genInterval = 0f;
-    [SerializeField] float obstacleInterval = 0f;
-    [SerializeField] float rewardInterval = 0f;
+    float genInterval = 0f;
+    float obstacleInterval = 0f;
+    float rewardInterval = 0f;
 
     // empty slots
-    [SerializeField] List<int> obstacleSlotRemain;
+    List<int> obstacleSlotRemain;
     int maxObstacleCount;
     float obstacleSlotSize;
 
@@ -43,6 +44,7 @@ public class LevelControl : MonoBehaviour
     [SerializeField] IntEventChannel startGameEvent;
     [SerializeField] VoidEventChannel playerDeathEvent;
     [SerializeField] VoidEventChannel levelSuccessEvent;
+    event System.Action destroyPoolsEvent;
 
     float IntPosToAngle(int pos) => (360 - maxObstacleCount * obstacleSlotSize) / 2f + pos * obstacleSlotSize;
     int AngleToIntSlot(float angle) => Mathf.FloorToInt((angle - (360 - maxObstacleCount * obstacleSlotSize) / 2f) / obstacleSlotSize);
@@ -54,18 +56,23 @@ public class LevelControl : MonoBehaviour
         instance = this;
         BGMSource = GetComponent<AudioSource>();
 
-        levelSuccessEvent.AddListener(delegate { Debug.Log("Level clear!" + GameTime.ToString()); });
+        levelSuccessEvent.AddListener(levelSuccess);
     }
 
     void Start()
     {
-        InitializeLevel(0);
+        InitializeLevel(level);
     }
 
     public void InitializeLevel(int level)
     {
         this.level = level;
         nowLevelData = levelData[level];
+
+        // creat object pools
+        obstaclePools = new List<SpawnablePool>();  // reset pools
+        destroyPoolsEvent = null;
+
         foreach (Spawnable prefab in nowLevelData.obstacles)
         {
             var poolHolder = new GameObject($"Pool: {prefab.name}");
@@ -78,6 +85,8 @@ public class LevelControl : MonoBehaviour
             pool.Initialize(prefab);
             obstaclePools.Add(pool);
 
+            destroyPoolsEvent += pool.DestroyPool;
+
             poolHolder.SetActive(true);
 
             totWeight += prefab.obstacleData.generateWeight;
@@ -88,6 +97,7 @@ public class LevelControl : MonoBehaviour
         ph.SetActive(false);
         rewardPool = ph.AddComponent<SpawnablePool>();
         rewardPool.Initialize(nowLevelData.rewardShield);
+        destroyPoolsEvent += rewardPool.DestroyPool;
         ph.SetActive(true);
 
         // reset obstacle array
@@ -102,8 +112,10 @@ public class LevelControl : MonoBehaviour
         exitGenerated = false;
 
         // set scene
-        sphereRenderer.material = nowLevelData.sphereMaterial;
-        ringRenderer.sprite = nowLevelData.ring;
+        Destroy(planetPrefab.gameObject);
+        var planetHolder = new GameObject($"Planet: {planetPrefab.name}");
+        planetPrefab = Instantiate(nowLevelData.planetPrefab);
+
         BGMSource.clip = nowLevelData.BGM;
         BGMSource.loop = true;
         BGMSource.Play();
@@ -135,6 +147,11 @@ public class LevelControl : MonoBehaviour
             n.SetDeactivateAction(delegate { Destroy(n.gameObject); });
 
             n.Spawn(0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            BlackScreen.instance.StartBlackScreen();
         }
     }
 
@@ -260,10 +277,17 @@ public class LevelControl : MonoBehaviour
             // gen exit
             Spawnable n = Instantiate(nowLevelData.ejector, transform);
             n.SetDeactivateAction(delegate { Destroy(n.gameObject); }); // destroy after touch
-            n.SetDeactivateAction(delegate { levelSuccessEvent.Broadcast(); }); // Broadcast Level Success
             n.Spawn(genAngle);
 
             exitGenerated = true;
         }
+    }
+
+    void levelSuccess()
+    {
+        BlackScreen.instance.StartBlackScreen();
+        destroyPoolsEvent?.Invoke();
+        InitializeLevel(1);
+        PlayerStateMachine.instance.SwitchState(typeof(PlayerState_Fly));
     }
 }

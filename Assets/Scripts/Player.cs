@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 
     [Header("Player status")]
     bool has_gravity = true;
+    bool has_speed = true;
     bool has_shield = false;
     public bool onGround => rb.IsTouchingLayers(planetData.ground);
     public int jumpTimes;
@@ -100,18 +101,28 @@ public class Player : MonoBehaviour
     // Movement under planet gravity
     private void Movement()
     {
-        if (has_gravity)
+        if (has_speed)
         {
             Vector2 v_up = Vector2.Dot(rb.velocity, gravityUp) * gravityUp;
-
-            //Debug.DrawLine(transform.position, transform.position + (Vector3)v_up, Color.blue);
-            //Debug.DrawLine(transform.position, transform.position + (Vector3)LineSpeed, Color.red);
-
             rb.velocity = v_up + LineSpeed;
-
+        }
+        if (has_gravity)
+        {
             rb.AddForce(gravityUp * - playerData.gravity);
         }
 
+    }
+
+    public void NoGravity()
+    {
+        has_gravity = false;
+        has_speed = false;
+    }
+
+    public void StartRun()
+    {
+        has_speed = true;
+        has_gravity = true;
     }
 
     public void Jump()
@@ -131,6 +142,19 @@ public class Player : MonoBehaviour
         coll.offset = playerData.rollColliderOff;
         transform.position = gravityUp * (planetData.radius + playerData.rollColliderSize.y / 2) + planetData.planetCenter;
         audioSource.Play();
+    }
+
+    public void Fly()
+    {
+        transform.position = new Vector3(0, 50, 0);
+        Attract();
+
+        NoGravity();
+
+        coll.size = playerData.rollColliderSize;
+        coll.offset = playerData.rollColliderOff;
+
+        rb.velocity = new Vector2(0, -playerData.flySpeed);
     }
 
     public void StopRoll()

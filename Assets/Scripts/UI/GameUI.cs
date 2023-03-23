@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
+    public static GameUI instance;
+
     [Header("Components")]
     [SerializeField] TextMeshProUGUI textTimer;
     [SerializeField] Image progressBar;
@@ -21,12 +23,15 @@ public class GameUI : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         startGameEvent.AddListener(GameStart);
         playerDeathEvent.AddListener(GameOver);
+
         gameObject.SetActive(false);
     }
 
-    void GameStart(int level)
+    public void GameStart(int level)
     {
         // set timer
         nowTime = 0;
@@ -38,6 +43,11 @@ public class GameUI : MonoBehaviour
         progressBar.fillAmount = progress;
 
         gameObject.SetActive(true);
+    }
+
+    public void HideUI()
+    {
+        gameObject.SetActive(false);
     }
 
     void GameOver()

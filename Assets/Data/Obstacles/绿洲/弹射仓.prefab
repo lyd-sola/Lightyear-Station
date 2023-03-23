@@ -140,3 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44f58171f4c0e34f9b07b92d8ca783c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelSuccessEvent: {fileID: 11400000, guid: 6dbe1582eca0e8c49a5b91b9e628c582, type: 2}

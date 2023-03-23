@@ -5,6 +5,8 @@ using UnityEngine;
 // 实现角色状态机，StateMachine继承自MonoBehaviour
 public class PlayerStateMachine : StateMachine
 {
+    public static PlayerStateMachine instance;
+
     [SerializeField] PlayerState[] states;  // SerializeField使私有对象可以在Inspector中显示
 
     Animator animator;
@@ -21,6 +23,8 @@ public class PlayerStateMachine : StateMachine
 
     private void Awake()
     {
+        instance = this;
+
         animator = GetComponentInChildren<Animator>();
 
         stateTable = new Dictionary<System.Type, IState>(states.Length);

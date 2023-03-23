@@ -43,4 +43,10 @@ public class SpawnablePool : MonoBehaviour
     }
     public void Release(Spawnable obj) => pool.Release(obj);
     public void Clear() => pool.Clear();
+
+    public void DestroyPool()
+    {
+        Clear();
+        Destroy(gameObject);
+    }
 }

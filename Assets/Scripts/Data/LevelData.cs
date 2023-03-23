@@ -29,6 +29,5 @@ public class LevelData : ScriptableObject
 
     [Header("UI Settings")]
     public Color timerColor;
-    public Sprite ring;
-    public Material sphereMaterial;
+    public SpriteRenderer planetPrefab;
 }

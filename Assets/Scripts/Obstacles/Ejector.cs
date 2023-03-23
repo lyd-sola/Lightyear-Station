@@ -5,14 +5,23 @@ using UnityEngine;
 // µØ…‰≤÷
 public class Ejector : MonoBehaviour
 {
+    [SerializeField] VoidEventChannel levelSuccessEvent;
+
+    bool flag = false;
+
+    private void OnEnable()
+    {
+        flag = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Player player))
+        if (!flag && collision.TryGetComponent(out Player player))
         {
+            flag = true;
             Debug.Log("Next Level!");
+            levelSuccessEvent.Broadcast();
             GetComponent<Spawnable>().Deactivate();
-            //player.AddShield();
-            //GetComponent<Spawnable>().DeactivateSudden();
         }
     }
 }

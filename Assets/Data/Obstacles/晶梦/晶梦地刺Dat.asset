@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3869b84b86b203c4aa675b00817d9c3f, type: 3}
-  m_Name: "\u5F39\u5C04\u4ED3Dat"
+  m_Name: "\u6676\u68A6\u5730\u523ADat"
   m_EditorClassIdentifier: 
-  downPoint: -3
-  upPoint: 5
+  downPoint: -5
+  upPoint: 2
   appearTime: 0.2
   disappearTime: 0.2
-  deactivateDelay: 0.3
-  isDeactivateOnPass: 0
-  generateWeight: 0
+  deactivateDelay: 0.5
+  isDeactivateOnPass: 1
+  generateWeight: 5

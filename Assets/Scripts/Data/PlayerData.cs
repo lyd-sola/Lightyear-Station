@@ -9,6 +9,7 @@ public class PlayerData : ScriptableObject
     public float speed;
     public float jumpSpeed;
     public float fastFallSpeed;
+    public float flySpeed;
 
     [Header("Gravity Settings")]
     public float gravity;

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 835fbc73624b3204882b0d9058a6b9b8, type: 3}
-  m_Name: "Level1\u7EFF\u6D32"
+  m_Name: "Level2\u6676\u68A6"
   m_EditorClassIdentifier: 
   obstacles:
-  - {fileID: 8205774704918606658, guid: 85feb13fe89576d419cabc339ea4bc6f, type: 3}
-  - {fileID: 3966871568622826426, guid: afa678801a738f742a3db4f7eae593a5, type: 3}
-  - {fileID: 3247217146912425659, guid: 96b4723c650a9434ab8cd0033033131f, type: 3}
+  - {fileID: 5224146968627468431, guid: 80c3565e950dd7b49b3a190f53e8e8ab, type: 3}
+  - {fileID: 304179726925107130, guid: 0f91b0285196497489ee5ce1fd89a2ba, type: 3}
+  - {fileID: 9120500391080684587, guid: 08ca7c77b337a85418a80ff4ad04a7d4, type: 3}
+  - {fileID: 8072431293877876855, guid: bbf8ef8a5030f244286fbb4892c201dd, type: 3}
   rewardShield: {fileID: 1597070627474838008, guid: 93e93269d9539154e9e0b5415656809b, type: 3}
   ejector: {fileID: 7008055731270675518, guid: 258d2a15ae21b0d4795d5f4ccdaf0871, type: 3}
   obstacleInterval: 20
@@ -97,8 +98,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  BGM: {fileID: 8300000, guid: e72ad5efa2597e24dbb225547a4763f8, type: 3}
+  BGM: {fileID: 8300000, guid: 98d888a631576a545a778fa4880fae42, type: 3}
   genInterval: 0.5
   exitGenTime: 10
-  timerColor: {r: 0.40000004, g: 0.8745099, b: 0.6901961, a: 1}
-  planetPrefab: {fileID: 3521111859178628019, guid: 5b0c4c1522db22b4b80cbadd5faeb454, type: 3}
+  timerColor: {r: 0.6392157, g: 0.33333334, b: 1, a: 1}
+  planetPrefab: {fileID: 3148004158116734268, guid: 2dda80c7d84d46f44bdda2345b2c7e50, type: 3}

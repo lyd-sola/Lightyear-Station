@@ -15,6 +15,7 @@ MonoBehaviour:
   speed: 1.7
   jumpSpeed: 42
   fastFallSpeed: 40
+  flySpeed: 50
   gravity: 250
   jumpTimes: 2
   rollColliderSize: {x: 1.72, y: 1.72}
