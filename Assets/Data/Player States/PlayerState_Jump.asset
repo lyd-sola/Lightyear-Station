@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b71eaa5903a87344d8c4330d095439d0, type: 3}
+  m_Script: {fileID: 11500000, guid: a1e6835bf9a358546a6604beb3ba29ba, type: 3}
   m_Name: PlayerState_Jump
   m_EditorClassIdentifier: 
   stateName: Player_jump

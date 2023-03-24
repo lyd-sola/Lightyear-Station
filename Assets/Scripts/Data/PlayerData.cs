@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObject/½ÇÉ«Êý¾Ý", order = 0)]
 public class PlayerData : ScriptableObject
 {
+    public float invincibleTime;
+    public float shieldGenTime = 15f;
+
     [Header("Speed Settings")]
     public float speed;
     public float jumpSpeed;
@@ -31,4 +34,9 @@ public class PlayerData : ScriptableObject
     public AudioClip jumpSound;
     public AudioClip deathSound;
     public AudioClip shieldSound;
+
+    [Header("Level")]
+    public int level1exp;
+    public int level2exp;
+    public int level3exp;
 }

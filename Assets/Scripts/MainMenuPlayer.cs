@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenPlayer : MonoBehaviour
+public class MainMenuPlayer : MonoBehaviour
 {
-    public static MainMenPlayer instance;
+    public static MainMenuPlayer instance;
 
     //[Header("Components")]
     Animator animator;

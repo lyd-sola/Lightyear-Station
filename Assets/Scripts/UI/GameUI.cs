@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class GameUI : MonoBehaviour
     [Header("Components")]
     [SerializeField] TextMeshProUGUI textTimer;
     [SerializeField] Image progressBar;
+    
+    [Header("DeathComponents")]
+    [SerializeField] Canvas deathScreeen;
+    [SerializeField] Text deathTimeText;
+    [SerializeField] Text coinText;
+    //SceneManager sceneManager;
 
 
     [Header("Events")]
@@ -28,7 +35,8 @@ public class GameUI : MonoBehaviour
         startGameEvent.AddListener(GameStart);
         playerDeathEvent.AddListener(GameOver);
 
-        gameObject.SetActive(false);
+        deathScreeen.gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
     public void GameStart(int level)
@@ -43,6 +51,7 @@ public class GameUI : MonoBehaviour
         progressBar.fillAmount = progress;
 
         gameObject.SetActive(true);
+        deathScreeen.gameObject.SetActive(false);
     }
 
     public void HideUI()
@@ -75,5 +84,25 @@ public class GameUI : MonoBehaviour
     {
         progress = LevelControl.instance.GameTime / LevelControl.instance.nowLevelData.exitGenTime;
         progressBar.fillAmount = progress;
+    }
+
+    public void ShowDeathScreen()
+    {
+        coinText.text = "Coin£∫" + Upgrades.coin.ToString();
+        deathTimeText.text = "ƒ„º·≥÷¡À£∫" + LevelControl.instance.GameTime.ToString() +"√Î";
+
+        deathScreeen.gameObject.SetActive(true);
+    }
+
+    public void ReturnMainMenu()
+    {
+        gameObject.SetActive(true);
+        Debug.Log("ReturnMainMenu");
+        SceneManager.LoadScene(0);
+    }
+
+    public void Restart()
+    {
+        LevelControl.instance.levelRestart();
     }
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     // Only one player instace, for other scripts
@@ -14,6 +13,7 @@ public class Player : MonoBehaviour
     PlayerInput input;
     TrailRenderer trailRenderer;
     AudioSource audioSource;
+    SpriteRenderer spriteRenderer;
 
     [Header("Settings")]
     public PlayerData playerData;
@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     bool has_shield = false;
     public bool onGround => rb.IsTouchingLayers(planetData.ground);
     public int jumpTimes;
+    float invincibleTime = 0;
 
 
     [Header("Player positions")]
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
         input   = GetComponent<PlayerInput>();
         trailRenderer = GetComponent<TrailRenderer>();
         audioSource = GetComponent<AudioSource>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -71,6 +73,9 @@ public class Player : MonoBehaviour
             rotateDir = 1f;
             transform.localScale = new Vector3(rotateDir, 1f, 1f);
         }
+
+        if (invincibleTime >= 0)
+            invincibleTime -= Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -117,12 +122,14 @@ public class Player : MonoBehaviour
     {
         has_gravity = false;
         has_speed = false;
+        rb.velocity = new Vector2(0, 0);
     }
 
     public void StartRun()
     {
         has_speed = true;
         has_gravity = true;
+        Attract();
     }
 
     public void Jump()
@@ -146,8 +153,10 @@ public class Player : MonoBehaviour
 
     public void Fly()
     {
+        trailRenderer.enabled = false;
+
         transform.position = new Vector3(0, 50, 0);
-        Attract();
+        //Attract();
 
         NoGravity();
 
@@ -155,6 +164,8 @@ public class Player : MonoBehaviour
         coll.offset = playerData.rollColliderOff;
 
         rb.velocity = new Vector2(0, -playerData.flySpeed);
+
+        trailRenderer.enabled = true;
     }
 
     public void StopRoll()
@@ -167,27 +178,44 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        if (invincibleTime > 0)
+            return;
         if (has_shield)
         {
             Debug.Log("Damage!" + Time.time.ToString());
             BreakShield();
+            invincibleTime = playerData.invincibleTime;
         }
         else
         {
             audioSource.PlayOneShot(playerData.deathSound);
             Debug.Log("Killed!" + Time.time.ToString());
+            PlayerStateMachine.instance.SwitchState(typeof(PlayerState_Die));
         }
     }
 
-    public void AddShield()
+    public void AddShield(bool playSound = true)
     {
         Debug.Log("½±Àø»¤¶Ü£¡" + Time.time.ToString());
         has_shield = true;
-        audioSource.PlayOneShot(playerData.shieldSound);
+
+        spriteRenderer.color = playerData.shieldColor;
+        trailRenderer.startColor = playerData.shieldTrailerColor;
+
+        if(playSound)
+            audioSource.PlayOneShot(playerData.shieldSound);
     }
 
     public void BreakShield()
     {
         has_shield = false;
+        spriteRenderer.color = playerData.normalColor;
+        trailRenderer.startColor = playerData.normalTrailerColor;
+    }
+
+    public void DeathEnd()
+    {
+        GameUI.instance.ShowDeathScreen();
+        Time.timeScale = 0;
     }
 }

@@ -2,23 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/½ÇÉ«×´Ì¬/Fly", fileName = "PlayerState_Fly")]
-public class PlayerState_Fly : PlayerState
+[CreateAssetMenu(menuName = "ScriptableObject/½ÇÉ«×´Ì¬/SuperBall", fileName = "PlayerState_SuperBall")]
+public class PlayerState_SuperBall : PlayerState
 {
     public override void Enter()
     {
         base.Enter();
-        player.Fly();
+        //player.Roll();
+        player.Jump();
     }
     
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
+        // landing
         if (player.onGround)
         {
-            player.StartRun();
-            player.StopRoll();
             stateMachine.SwitchState(typeof(PlayerState_Run));
         }
     }

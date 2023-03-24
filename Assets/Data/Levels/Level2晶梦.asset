@@ -100,6 +100,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   BGM: {fileID: 8300000, guid: 98d888a631576a545a778fa4880fae42, type: 3}
   genInterval: 0.5
-  exitGenTime: 10
+  exitGenTime: 60
   timerColor: {r: 0.6392157, g: 0.33333334, b: 1, a: 1}
   planetPrefab: {fileID: 3148004158116734268, guid: 2dda80c7d84d46f44bdda2345b2c7e50, type: 3}

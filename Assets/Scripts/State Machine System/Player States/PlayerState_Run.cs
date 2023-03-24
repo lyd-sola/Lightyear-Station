@@ -19,9 +19,8 @@ public class PlayerState_Run : PlayerState
         // jump
         if (input.jumpPressed && player.jumpTimes > 0)
         {
-            player.Jump();
             input.jumpTime = -1f; // reset jump state
-            --player.jumpTimes;
+            //--player.jumpTimes;
             stateMachine.SwitchState(typeof(PlayerState_Jump));
         }
 

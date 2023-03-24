@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: "\u6676\u68A6\u5939\u7F1D\u5E73\u53F0Dat"
   m_EditorClassIdentifier: 
   downPoint: -3
-  upPoint: 4.9
+  upPoint: 4
   appearTime: 0.2
   disappearTime: 0.2
   deactivateDelay: 0.5
   isDeactivateOnPass: 1
-  generateWeight: 5
+  generateWeight: 3

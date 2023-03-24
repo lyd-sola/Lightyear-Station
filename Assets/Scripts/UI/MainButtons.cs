@@ -41,7 +41,7 @@ public class MainButtons : MonoBehaviour
                 progress = 1f;
                 isRotating = false;
                 text.text = texts[index];
-                MainMenPlayer.instance.stopRun();
+                MainMenuPlayer.instance.stopRun();
             }
             transform.rotation = Quaternion.Slerp(rotateStart, rotateEnd, progress);
         }
@@ -56,7 +56,7 @@ public class MainButtons : MonoBehaviour
             index = (index + 1) % 4;
             text.text = "";
 
-            MainMenPlayer.instance.runRight();
+            MainMenuPlayer.instance.runRight();
 
             rotateStart = transform.rotation;
             rotateEnd = rotateStart * Quaternion.Euler(new Vector3(0, 0, 90f));
@@ -72,18 +72,10 @@ public class MainButtons : MonoBehaviour
             index = (index + 3) % 4;
             text.text = "";
 
-            MainMenPlayer.instance.runLeft();
+            MainMenuPlayer.instance.runLeft();
 
             rotateStart = transform.rotation;
             rotateEnd = rotateStart * Quaternion.Euler(new Vector3(0, 0, -90f));
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out MainMenPlayer menu))
-        {
-
-        }    
     }
 }

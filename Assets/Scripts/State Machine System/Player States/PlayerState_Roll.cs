@@ -18,9 +18,15 @@ public class PlayerState_Roll : PlayerState
         // StopRoll
         if(!input.rollPressed)
         {
-            player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            //player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             player.StopRoll();
             stateMachine.SwitchState(typeof(PlayerState_Run));
+        }
+
+        // SuperBall
+        if(input.jumpPressed && Upgrades.instance.GetUpgradeStat("ChaoJiQiu") != 0)
+        {
+            stateMachine.SwitchState(typeof(PlayerState_SuperBall));
         }
     }
 

@@ -10,6 +10,7 @@ public class PlayerState_Jump : PlayerState
     {
         base.Enter();
         fastFall = false;
+        player.Jump();
     }
 
     public override void LogicUpdate()
@@ -21,16 +22,15 @@ public class PlayerState_Jump : PlayerState
             stateMachine.SwitchState(typeof(PlayerState_Fall));
 
         // jump
-        if (!fastFall && input.jumpPressed && player.jumpTimes > 0)
+        if (!fastFall && input.jumpPressed && player.jumpTimes > 0 && Upgrades.instance.GetUpgradeStat("ErDuanTiao") != 0)
         {
-            player.Jump();
             input.jumpTime = -1f; // reset jump state
             --player.jumpTimes;
             stateMachine.SwitchState(typeof(PlayerState_Jump));
         }
 
         // Roll
-        if (input.rollPressed && !fastFall)
+        if (input.rollPressed && !fastFall && Upgrades.instance.GetUpgradeStat("JiSuXiaZhui") != 0)
         {
             fastFall = true;
             player.FallFast();

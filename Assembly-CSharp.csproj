@@ -59,8 +59,10 @@
     <Compile Include="Assets\Scripts\Obstacles\Spawnable.cs" />
     <Compile Include="Assets\Scripts\Data\ObstacleData.cs" />
     <Compile Include="Assets\Scripts\UI\RingRotate.cs" />
+    <Compile Include="Assets\Scripts\BlackScreen.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState.cs" />
     <Compile Include="Assets\Scripts\UI\GameUI.cs" />
+    <Compile Include="Assets\Scripts\UI\UpgradeUI.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Killable.cs" />
     <Compile Include="Assets\Scripts\Obstacles\SpawnablePool.cs" />
     <Compile Include="Assets\Scripts\Event System\VoidEventChannel.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Assets\Scripts\Obstacles\ReverseObstacle.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Fall.cs" />
     <Compile Include="Assets\Scripts\MainMenuPlayer.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Fly.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Run.cs" />
     <Compile Include="Assets\Scripts\Data\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Data\PlanetData.cs" />
@@ -79,16 +82,18 @@
     <Compile Include="Assets\Scripts\Event System\OneParmEventChannel.cs" />
     <Compile Include="Assets\Scripts\UI\MainButtons.cs" />
     <Compile Include="Assets\Scripts\Data\LevelData.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Die.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Ejector.cs" />
-    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Jump.cs" />
     <Compile Include="Assets\Scripts\State Machine System\IState.cs" />
     <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Roll.cs" />
     <Compile Include="Assets\Scripts\State Machine System\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Obstacles\RewardShield.cs" />
     <Compile Include="Assets\Scripts\UI\Flow.cs" />
     <Compile Include="Assets\Scripts\Obstacles\ObstaclesControl.cs" />
-    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Fly.cs" />
-    <Compile Include="Assets\Scripts\BlackScreen.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_SuperBall.cs" />
+    <Compile Include="Assets\Scripts\MainMenuControl.cs" />
+    <Compile Include="Assets\Scripts\Upgrades.cs" />
+    <Compile Include="Assets\Scripts\State Machine System\Player States\PlayerState_Jump.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

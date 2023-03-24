@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u6676\u68A6\u957F\u5730\u523ADat"
   m_EditorClassIdentifier: 
   downPoint: -5
-  upPoint: 2
+  upPoint: 1.7
   appearTime: 0.2
   disappearTime: 0.2
   deactivateDelay: 0.5

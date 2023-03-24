@@ -23,6 +23,7 @@ public class LevelControl : MonoBehaviour
 
     // Gametime
     float gameStartTime = 0f;
+    float shieldTime;
     public float GameTime => Time.time - gameStartTime;
 
     // Generate count
@@ -126,6 +127,19 @@ public class LevelControl : MonoBehaviour
         genInterval = 0f;
         obstacleInterval = 0f;
         rewardInterval = 0f;
+        Time.timeScale = 1;
+
+        // set player default
+        PlayerStateMachine.instance.SwitchState(typeof(PlayerState_Fly));
+        
+        if (Upgrades.instance.GetUpgradeStat("ErDuanTiao") != 0)   // 初始护盾
+            Player.instance.AddShield(false);
+
+        Upgrades.instance.AllUpgrades();
+        if (Upgrades.instance.GetUpgradeStat("ZaiShengHuDun") != 0)
+            shieldTime = Player.instance.playerData.shieldGenTime;
+
+        // set ui
 
         // start game
         startGameEvent.Broadcast(level);
@@ -133,25 +147,16 @@ public class LevelControl : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.O))
+        // 再生护盾
+        if(Upgrades.instance.GetUpgradeStat("ZaiShengHuDun") != 0)
         {
-            obstaclePools[Random.Range(0, obstaclePools.Count)].Get(Random.Range(0f, 360f));
-        }
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            rewardPool.Get(Random.Range(0f, 360f));
-        }
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            Spawnable n = Instantiate(nowLevelData.ejector, transform);
-            n.SetDeactivateAction(delegate { Destroy(n.gameObject); });
-
-            n.Spawn(0f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            BlackScreen.instance.StartBlackScreen();
+            if (shieldTime > 0)
+                shieldTime -= Time.deltaTime;
+            else
+            {
+                shieldTime = Player.instance.playerData.shieldGenTime;
+                Player.instance.AddShield(false);
+            }
         }
     }
 
@@ -277,6 +282,7 @@ public class LevelControl : MonoBehaviour
             // gen exit
             Spawnable n = Instantiate(nowLevelData.ejector, transform);
             n.SetDeactivateAction(delegate { Destroy(n.gameObject); }); // destroy after touch
+            destroyPoolsEvent += delegate { Destroy(n.gameObject); };
             n.Spawn(genAngle);
 
             exitGenerated = true;
@@ -288,6 +294,12 @@ public class LevelControl : MonoBehaviour
         BlackScreen.instance.StartBlackScreen();
         destroyPoolsEvent?.Invoke();
         InitializeLevel(1);
-        PlayerStateMachine.instance.SwitchState(typeof(PlayerState_Fly));
+    }
+
+    public void levelRestart()
+    {
+        BlackScreen.instance.StartBlackScreen();
+        destroyPoolsEvent?.Invoke();
+        InitializeLevel(level);
     }
 }
